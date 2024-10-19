@@ -1,31 +1,34 @@
 #include<iostream>
-#include<string>
+#include<math.h>
 #include<algorithm>
 using namespace std;
-
+char recursive( int len , int k);
 
 char findKthBit(int n, int k) {
-    string s = "0" , t = s;
+    int len = pow(2,n)-1;
+    return recursive( len , k );
+}
+char recursive( int len , int k){
+    if( len == 1 )
+        return '0';
 
-    for( int i=1 ; i < n ; i++){
-        s = s + "1" ;
-        int j=0;
-        while( j < t.length() ){
-            if( t[j] == '1' ) t[j] = '0' ;
-            else t[j] = '1' ;
-            j++;
-        }
-        reverse(t.begin() , t.end());
-        s = s + t;
-        t = s ;
+    int half = len/2 ;
+    int mid = half + 1;
+
+    if( k == mid )  //middle
+        return '1' ;
+    else if( k < mid ){ //left
+        return recursive( half , k );
     }
-    
-    return s[k-1];
+    else{   //right
+        char ch = recursive( half , len-k+1 );
+        return (ch!='1')? '1' : '0';
+    }
 }
 
 int main(){
 
-    cout<<findKthBit( 3 , 1 )<<endl;
-    cout<<findKthBit( 4 , 11 )<<endl;
-    cout<<findKthBit( 7 , 19 )<<endl;
+    cout<<findKthBit( 3 , 1 )<<endl;    // 0
+    cout<<findKthBit( 4 , 11 )<<endl;   // 1
+    cout<<findKthBit( 5 , 24 )<<endl;   // 0
 }
